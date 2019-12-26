@@ -55,4 +55,54 @@ if(root==null)
         display(root.left);
         display(root.right);
 }
+public int query(int start, int end)
+{/*
+three cases
+1. node interval lies inside start interval -> rreturn its value
+2. Completely outside ( nsi > qei && nei< qsi)//q-> query and si-> start interval
+return default vaue of query like 0 for sum Integer.MIN_VALUE for max query
+3. Overlapping -> call left and right childs and deduce answer from these values*/
+
+return query(root,start,end);
+
+}
+
+    private int query(Node node, int qsi, int qei) {
+    if( node.startInterval>=qsi&&node.endInterval<=qei )
+        return node.data;//completely inside Case 1
+        else if( node.startInterval> qei || node. endInterval< qsi)
+            return 0;//default value CASE2 .. completely ouside
+        else //case 3 overlapping case
+            {
+        return query(node.left,qsi,qei)+query(node.right,qsi,qei);
+            }
+
+    }
+    public void update(int index, int value) {
+    //1. if index lies completely inside node index-> call left and right
+        //2. if not lying b/w node intervals return data;
+        //3. if start and end interval 0 equal . change value of node and return new value
+        root.data=update(root, index,  value);
+        System.out.println(root.data);
+    }
+
+    private int update(Node root, int index, int value) {
+    if(root.startInterval==index&&root.endInterval==index)
+    {
+        root.data=value;//Case 3
+        return value;
+    }
+    else if( root.endInterval<index||root.startInterval> index)
+    {//CASE 2
+        return root.data;
+    }
+    else
+    {  // completely inside Case1
+        int leftans=update(root.left,index,value);
+        int rightans=update(root.right,index,value);
+        root.data=leftans+rightans;
+        return root.data;
+    }
+    }
+
 }
